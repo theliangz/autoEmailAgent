@@ -1,0 +1,17 @@
+# OpenAI Agent SDK
+openai-agents
+openai>=1.0.0
+# 数据库
+mysql-connector-python>=8.0.33
+# 环境变量
+python-dotenv>=1.0.0
+# 图片处理
+Pillow>=10.0.0
+# PDF处理
+pdf2image>=1.16.0
+# 其他工具
+requests>=2.31.0
+# Pydantic - 数据验证和类型约束
+pydantic>=2.0.0
+
+

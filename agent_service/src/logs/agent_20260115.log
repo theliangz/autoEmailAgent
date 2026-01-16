@@ -1,0 +1,400 @@
+2026-01-15 10:13:46 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:13:46 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:13:47 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:13:47 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:13:47 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:13:47 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:13:47 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:14:15 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:14:16 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:14:28 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 10:14:33 - autoEmailAgent - INFO - [工具调用] parse_email_expense_table(email_content_length=483)
+2026-01-15 10:14:33 - autoEmailAgent - INFO - [步骤] 费用解析: 开始解析邮件正文中的费用明细
+2026-01-15 10:14:44 - autoEmailAgent - INFO - [步骤] 费用解析完成: 邮件费用明细解析完成
+2026-01-15 10:16:46 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=cursor_payment.jpg, ocr_provider=openai)
+2026-01-15 10:16:46 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: cursor_payment.jpg
+2026-01-15 10:16:49 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=claude_payment.jpg, ocr_provider=openai)
+2026-01-15 10:16:49 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: claude_payment.jpg
+2026-01-15 10:16:51 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=chatgpt_payment.jpg, ocr_provider=openai)
+2026-01-15 10:16:51 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=chatgpt_payment.jpg, ocr_provider=openai)
+2026-01-15 10:16:51 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: chatgpt_payment.jpg
+2026-01-15 10:16:58 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=gemini_payment.jpg, ocr_provider=openai)
+2026-01-15 10:16:58 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: gemini_payment.jpg
+2026-01-15 10:17:01 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=payments.pdf, ocr_provider=openai)
+2026-01-15 10:17:01 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: payments.pdf
+2026-01-15 10:17:37 - autoEmailAgent - INFO - [步骤] 材料检查完成: 材料完整性检查完成
+2026-01-15 10:17:44 - autoEmailAgent - INFO - [工具调用] db_insert_reimbursement(email_id=9, applicant_name=张亮, status=NEED_INFO)
+2026-01-15 10:17:44 - autoEmailAgent - INFO - [步骤] 数据库操作: 开始插入/更新报销记录: 9
+2026-01-15 10:17:52 - autoEmailAgent - INFO - [工具调用] db_insert_reimbursement(email_id=9, applicant_name=张亮, status=NEED_INFO)
+2026-01-15 10:17:52 - autoEmailAgent - INFO - [步骤] 数据库操作: 开始插入/更新报销记录: 9
+2026-01-15 10:17:57 - autoEmailAgent - INFO - [工具调用] draft_and_send_reply_email(email_id=9, to_email=theliang9@163.com, applicant_name=张亮, issues_count=3)
+2026-01-15 10:18:35 - autoEmailAgent - INFO - [步骤] 撰写并发送邮件: 开始为 张亮 撰写并发送补充材料邮件
+2026-01-15 10:18:45 - autoEmailAgent - INFO - [工具调用] draft_reply_email(applicant_name=张亮, issues_count=3)
+2026-01-15 10:18:45 - autoEmailAgent - INFO - [步骤] 邮件草稿: 开始为 张亮 撰写补充材料邮件草稿
+2026-01-15 10:22:47 - autoEmailAgent - INFO - [步骤] 邮件草稿完成: 为 张亮 撰写的邮件草稿已完成
+2026-01-15 10:23:03 - autoEmailAgent - INFO - [工具调用] send_reply_email(email_id=9, to_email=theliang9@163.com, subject=Re: AI报销-张亮-AC - 补充报销凭证与信息)
+2026-01-15 10:25:33 - autoEmailAgent - INFO - [步骤] 发送邮件: 开始发送回复邮件给 theliang9@163.com
+2026-01-15 10:26:14 - autoEmailAgent - INFO - 已设置回复关系: Message-ID=<4ee5ab4e.755a.19bb684d37e.Coremail.theliang9@163.com>
+2026-01-15 10:26:33 - autoEmailAgent - INFO - [步骤] 发送邮件完成: 回复邮件已成功发送给 theliang9@163.com
+2026-01-15 10:26:33 - autoEmailAgent - INFO - 回复邮件已发送: theliang9@163.com, 主题: Re: AI报销-张亮-AC
+2026-01-15 10:26:45 - autoEmailAgent - INFO - [步骤] 任务完成: 批处理任务执行完成
+2026-01-15 10:26:45 - autoEmailAgent - INFO - ================================================================================
+2026-01-15 10:26:45 - autoEmailAgent - INFO - 最终输出:
+2026-01-15 10:26:45 - autoEmailAgent - INFO - 处理完成。总结：
+
+**处理结果：**
+- 发现1封待处理的AI工具报销邮件（张亮-AC）
+- 邮件正文解析成功：4项AI工具订阅费用，总计882 USD
+- **问题：未找到任何附件文件**，无法提供支付凭证
+- **状态：材料不齐全**，已发送补充材料邮件
+- 回复邮件已发送至theliang9@163.com，要求补充所有支付凭证
+
+**下一步：**
+等待报销人补充支付凭证后重新处理。由于数据库插入功能暂时不可用，建议后续手动记录此笔报销的状态为"NEED_INFO"。
+2026-01-15 10:26:45 - autoEmailAgent - INFO - ================================================================================
+2026-01-15 10:26:45 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:26:45 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:29:38 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:29:38 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:29:39 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:29:39 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:29:39 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:29:39 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:29:39 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:30:25 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:30:27 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:41:08 - autoEmailAgent - WARNING - [步骤] 数据库初始化: 连接测试失败，但继续运行
+2026-01-15 10:46:23 - autoEmailAgent - INFO - [步骤] 费用核对结果: 开始核对邮件费用明细与OCR识别结果
+2026-01-15 10:46:25 - autoEmailAgent - INFO - [步骤] 费用核对结果
+2026-01-15 10:52:29 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:53:40 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=10, download_attachments=True, extract_zips=True)
+2026-01-15 10:53:41 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:54:19 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 10:54:43 - autoEmailAgent - INFO - [步骤] 任务完成: 批处理任务执行完成
+2026-01-15 10:54:43 - autoEmailAgent - INFO - ================================================================================
+2026-01-15 10:54:43 - autoEmailAgent - INFO - 最终输出:
+2026-01-15 10:54:43 - autoEmailAgent - INFO - 看起来当前没有需要处理的邮件。邮箱中没有新的AI工具报销邮件，数据库中也没有状态为NEW的记录。
+
+处理完成。当前状态：
+- 邮箱中未找到新的AI工具报销邮件
+- 数据库中没有状态为NEW的待处理记录
+
+系统已准备好处理新的AI工具报销邮件。当有新邮件到达时，将按照既定流程进行处理：
+1. 读取邮件内容和附件
+2. 解析费用明细表格
+3. OCR识别附件
+4. 核对邮件内容与附件信息
+5. 根据核对结果更新数据库状态
+6. 如材料不齐或不一致，自动发送补充材料邮件
+2026-01-15 10:54:43 - autoEmailAgent - INFO - ================================================================================
+2026-01-15 10:54:43 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:54:43 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:54:56 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:54:56 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:54:57 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:54:57 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:54:57 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:54:57 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:54:57 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:55:08 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:55:08 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:55:23 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:55:23 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:55:23 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:55:23 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:55:24 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:55:24 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:55:24 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:55:46 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:55:47 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:55:56 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 10:55:56 - autoEmailAgent - INFO - [步骤] 获取待处理邮件列表：{"emails":[],"count":0}
+2026-01-15 10:57:24 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:57:24 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:57:37 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:57:37 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:57:38 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:57:38 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:57:38 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:57:38 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:57:38 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:58:02 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:58:03 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:58:07 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 10:58:10 - autoEmailAgent - INFO - [步骤] 获取待处理邮件列表：{"emails":[],"count":0}
+2026-01-15 10:58:14 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:58:14 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:58:28 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:58:28 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:58:28 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:58:28 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:58:29 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:58:29 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:58:29 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:58:51 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:58:52 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 10:59:15 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 10:59:15 - autoEmailAgent - INFO - 程序结束
+2026-01-15 10:59:30 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 10:59:30 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 10:59:31 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 10:59:31 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 10:59:31 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 10:59:31 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 10:59:31 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 10:59:54 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 10:59:55 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 11:00:31 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:00:31 - autoEmailAgent - INFO - 程序结束
+2026-01-15 11:00:44 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 11:00:44 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 11:00:45 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 11:00:45 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 11:00:45 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 11:00:45 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 11:00:45 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 11:01:11 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 11:01:12 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 11:01:17 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 11:01:20 - autoEmailAgent - INFO - [步骤] 获取待处理邮件列表：{"emails":[{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","date":"2026-01-13T16:41:56+08:00"}],"count":1}
+2026-01-15 11:01:26 - autoEmailAgent - INFO - [工具调用] parse_email_expense_table(email_content_length=147)
+2026-01-15 11:01:26 - autoEmailAgent - INFO - [步骤] 费用解析: 开始解析邮件正文中的费用明细
+2026-01-15 11:01:38 - autoEmailAgent - INFO - [步骤] 邮件正文解析完成，解析结果为：{'applicant_name': '张亮', 'department': 'AC', 'expenses': [{'date': '2025-12-18', 'tool_name': 'Cursor', 'amount': 192, 'currency': 'USD', 'notes': ''}, {'date': '2025-12-19', 'tool_name': 'Claude', 'amount': 120, 'currency': 'USD', 'notes': ''}, {'date': '2025-12-20', 'tool_name': 'ChatGPT Plus', 'amount': 60, 'currency': 'USD', 'notes': ''}], 'total_amount': 372, 'total_currency': 'USD', 'other_notes': '附件为支付凭证，请查收。'}
+2026-01-15 11:01:53 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=uploads/2026-01-13/theliang9@163.com/IMG_20251218_, ocr_provider=openai)
+2026-01-15 11:01:59 - autoEmailAgent - ERROR - [步骤] OCR失败: 文件不存在: uploads/2026-01-13/theliang9@163.com/IMG_20251218_093648.jpg
+2026-01-15 11:03:08 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:03:08 - autoEmailAgent - INFO - 程序结束
+2026-01-15 11:03:24 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 11:03:24 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 11:03:25 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 11:03:25 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 11:03:25 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 11:03:25 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 11:03:25 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 11:03:49 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 11:03:50 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 11:04:04 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 11:04:04 - autoEmailAgent - INFO - [步骤] 获取待处理邮件列表：{"emails":[{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","date":"2026-01-13T16:41:56+08:00"}],"count":1}
+2026-01-15 11:04:13 - autoEmailAgent - INFO - [工具调用] parse_email_expense_table(email_content_length=119)
+2026-01-15 11:04:13 - autoEmailAgent - INFO - [步骤] 费用解析: 开始解析邮件正文中的费用明细
+2026-01-15 11:04:25 - autoEmailAgent - INFO - [步骤] 邮件正文解析完成，解析结果为：{'applicant_name': '张亮', 'department': 'AC', 'expenses': [{'date': '2025-12-18', 'tool_name': 'Cursor', 'amount': 192, 'currency': 'USD', 'notes': ''}, {'date': '2025-12-19', 'tool_name': 'ChatGPT Plus', 'amount': 20, 'currency': 'USD', 'notes': ''}], 'total_amount': 212, 'total_currency': 'USD', 'other_notes': '附件包含支付凭证，请查收。'}
+2026-01-15 11:06:23 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:06:23 - autoEmailAgent - INFO - 程序结束
+2026-01-15 11:06:36 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 11:06:36 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 11:06:37 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 11:06:37 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 11:06:37 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 11:06:37 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 11:06:37 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 11:07:01 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=10, download_attachments=True, extract_zips=True)
+2026-01-15 11:07:02 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 11:07:06 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 11:07:08 - autoEmailAgent - INFO - [步骤] 获取待处理邮件列表：{"emails":[{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","date":"2026-01-13T16:41:56+08:00"}],"count":1}
+2026-01-15 11:07:14 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=9, max_count=1, download_attachments=True, extract_zips=True)
+2026-01-15 11:07:15 - autoEmailAgent - INFO - [步骤] 邮件处理: 开始处理邮件: 9
+2026-01-15 11:07:37 - autoEmailAgent - INFO - [步骤] 邮件处理完成: 邮件 9 处理完成
+2026-01-15 11:07:44 - autoEmailAgent - INFO - [步骤] 邮件 9 处理结果：{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","to":"zhangliang@variflight.com","date":"2026-01-13T16:41:56+08:00","body_text":"\n\n\n\n\n\n\n\n\n\n\n\n-------- 转发邮件信息 --------\n发件人：\"张亮\" <zhangliang@variflight.com>\n发送日期：2026-01-12 15:38:29\n收件人：theliang9 <theliang9@163.com>\n主题：AI报销-张亮-AC\n\n\nDear HR,\n\n现提交AC算法委员会张亮 2025 年第四季度 AI 工具费用报销申请。费用明细见邮件正文，支付账单、收据、付款凭证在附件压缩包中。\n\n一、AI 在工作中的应用 (2025 Q4)\n| 月份 | 工作内容 | AI 工具作用 |\n| 10月 |\n\n• 航班数据取数Kotlin代码解读\n\n\n\n\n• 航空查询agent工具调用\n\n|\n\nCursor：拆解开源项目架构；\n\nCursor：辅助实现编码\n\n|\n| 11月 |\n\n• OCR工具对比\n\n\n\n\n• 航空查询agent开发\n\n|\n\nGPT-5：代码异常bug分析；\n\nCursor：辅助实现编码\n\n|\n| 12月 |\n\n• 开源项目分析对比\n\n\n\n\n• PPT、思维导图生成\n\n\n\n\n• 多轮Agent会话、memory机制研发\n\n|\n\nCursor：辅助实现编码；\n\n\nGPT-5：文件内容提取、OCR识别\n\n|\n二、费用明细 (2025 Q4)\n| 支付日期 | 工具 / 订阅 | 金额 (USD) | 备注 |\n| 12-18 |  Cursor年度订阅 | 192.00 | 年度订阅（价格相比月度订阅优惠力度更大） |\n| 12-18 | ChatGPT Plus | 24.99 | 月度订阅 |\n| 合计 |\n| 216.99 |\n|\n其他说明：\n●可能由于chatGPT官网限制国内银行的visa卡支付，因此无法官网直充。故第三方充值，支付凭证见chatGPT月度订阅.jpg。金额略高于官方为：24.99$\n●cursor为年度订阅，故价格优惠，每月仅16$，因此年度订阅金额为192$\n|\n| 飞友科技 | | |\n| 张亮 | | |\n|\n\n\n\n\n\n","body_html":"<div data-ntes=\"ntes_mail_body_root\" style=\"line-height:1.7;color:#000000;font-size:14px;font-family:Arial\"><div id=\"spnEditorContent\"><div style=\"margin: 0;\"><br></div><div style=\"margin: 0;\"><br></div><div style=\"margin: 0;\"><br></div><div style=\"margin: 0;\"><br></div><div style=\"margin: 0;\"><br></div></div><div style=\"position:relative;zoom:1\"></div><div id=\"divNeteaseMailCard\"></div><div style=\"margin: 0;\"><br></div><div id=\"isForwardContent\">-------- 转发邮件信息 --------<br>发件人：\"张亮\" &lt;zhangliang@variflight.com&gt;<br>发送日期：2026-01-12 15:38:29<br>收件人：theliang9 &lt;theliang9@163.com&gt;<br>主题：AI报销-张亮-AC<br><style>       .wecom_custom_card_mobile *, .wecom_custom_card_mail *, .wecom_custom_card_address * {color: rgba(10, 17, 26, 0.50) !important; }       .qqmail_sign *{text-decoration-line: none !important;  line-break: after-white-space; }    </style>\n\n\n<div style=\"font-size: 14.6667px; font-family: -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;;\" data-mail-from=\"wemail-pc\"><div id=\"wemail_placeholder_space\"><div style=\"margin-bottom: 0px; padding-bottom: 0px;\"><p data-path-to-node=\"0\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><b style=\"background-color: rgb(255, 255, 255);\">Dear HR,</b></p><p data-path-to-node=\"3\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\">现提交AC算法委员会<b>张亮</b>&nbsp;2025 年第四季度 AI 工具费用报销申请。费用明细见邮件正文，支付账单、收据、付款凭证在附件压缩包中。</p><h3 data-path-to-node=\"4\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><b style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑;\">一、AI 在工作中的应用 (2025 Q4)</b></h3></div><div style=\"margin-top: 0px; padding-top: 0px; margin-bottom: 32px; padding-bottom: 0px;\"><table data-path-to-node=\"5\" style=\"margin-bottom: 0px; border-collapse: collapse; font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\" id=\"tbSted1\"><thead style=\"margin-top:0px !important\"><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; margin-top: 0px !important;\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">月份</strong></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">工作内容</strong></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">AI 工具作用</strong></td></tr></thead><tbody style=\"margin-top:0px !important\"><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; margin-top: 0px !important;\"><span data-path-to-node=\"5,1,0,0\" style=\"margin-top:0px !important\"><b style=\"margin-top:0px !important\">10月</b></span></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,1,1,0\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• 航班数据取数Kotlin代码解读</p><br data-path-to-node=\"5,1,1,1\" style=\"margin-top:0px !important\"><p data-path-to-node=\"5,1,1,2\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• 航空查询agent工具调用</p></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,1,2,0\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; line-height: 1.144; background-color: transparent; color: rgb(0, 0, 0); margin-top: 0px !important; margin-bottom: 0px !important;\" paragraph-line-height-multiple=\"0.8\"><span style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; font-weight: bold; font-style: normal; text-decoration: none; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);\"></span><span style=\"background-color: rgba(0, 0, 0, 0); font-size: 11pt; font-weight: bold;\"><b style=\"background-color: rgba(0, 0, 0, 0);\">Cursor：</b></span><span style=\"background-color: rgba(0, 0, 0, 0); font-size: 11pt;\">拆解开源项目架构；</span></p><p data-path-to-node=\"5,1,2,4\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; line-height: 1.144; background-color: transparent; color: rgb(0, 0, 0); margin-top: 0px !important; margin-bottom: 0px !important;\" paragraph-line-height-multiple=\"0.8\"><span style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; font-weight: bold; font-style: normal; text-decoration: none; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);\"><b style=\"font-weight: bold; font-style: normal; text-decoration: none; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);\">Cursor</b></span><span style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; font-weight: bold; font-style: normal; text-decoration: none; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);\">：</span><span style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; font-style: normal; text-decoration: none; color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0);\">辅助实现编码</span></p></td></tr><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; margin-top: 0px !important;\"><span data-path-to-node=\"5,2,0,0\" style=\"margin-top:0px !important\"><b style=\"margin-top:0px !important\">11月</b></span></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,2,1,0\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• OCR工具对比</p><br data-path-to-node=\"5,2,1,1\" style=\"margin-top:0px !important\"><p data-path-to-node=\"5,2,1,2\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• 航空查询agent开发</p></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,2,2,0\" style=\"margin-top:0px !important;margin-bottom:0px !important\"><b style=\"font-size: inherit;\">GPT-5</b><span style=\"font-size: inherit;\">：代码异常bug分析；</span></p><p data-path-to-node=\"5,2,2,4\" style=\"margin-top:0px !important;margin-bottom:0px !important\"><b>Cursor</b>：辅助实现编码</p></td></tr><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; margin-top: 0px !important;\"><span data-path-to-node=\"5,3,0,0\" style=\"margin-top:0px !important\"><b style=\"margin-top:0px !important\">12月</b></span></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,3,1,0\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• 开源项目分析对比</p><br data-path-to-node=\"5,3,1,1\" style=\"margin-top:0px !important\"><p data-path-to-node=\"5,3,1,2\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• PPT、思维导图生成</p><br data-path-to-node=\"5,3,1,3\" style=\"margin-top:0px !important\"><p data-path-to-node=\"5,3,1,4\" style=\"margin-top:0px !important;margin-bottom:0px !important\">• 多轮Agent会话、memory机制研发</p></td><td style=\"border: 1px solid; margin-top: 0px !important;\"><p data-path-to-node=\"5,3,2,0\" style=\"margin-top:0px !important;margin-bottom:0px !important\"><b></b></p><b style=\"background-color: rgb(255, 255, 255);\">Cursor</b><span style=\"font-weight: 400;\">：辅助实现编码；</span><br data-path-to-node=\"5,3,2,3\" style=\"margin-top:0px !important\"><p data-path-to-node=\"5,3,2,4\" style=\"margin-top:0px !important;margin-bottom:0px !important\"><b>GPT-5</b>：文件内容提取、OCR识别</p></td></tr></tbody></table></div><div style=\"margin-top: 0px; padding-top: 0px; margin-bottom: 0px; padding-bottom: 0px;\"><hr data-path-to-node=\"6\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><h3 data-path-to-node=\"7\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><b style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑;\">二、费用明细 (2025 Q4)</b></h3></div><div style=\"margin-top: 0px; padding-top: 0px; margin-bottom: 32px; padding-bottom: 0px;\"><table data-path-to-node=\"8\" style=\"margin-bottom: 0px; border-collapse: collapse; font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\" id=\"tbSted0\"><tbody><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; box-sizing: border-box; width: 61.3333px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">支付日期</strong></td><td style=\"border: 1px solid; box-sizing: border-box; width: 111.948px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">工具 / 订阅</strong></td><td style=\"border: 1px solid; box-sizing: border-box; width: 79.625px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">金额 (USD)</strong></td><td style=\"border: 1px solid; box-sizing: border-box; width: 452.115px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><strong style=\"margin-top:0px !important;margin-bottom:0px !important\">备注</strong></td></tr><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; box-sizing: border-box; width: 61.3333px; height: 20px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,1,0,0\" style=\"margin-top:0px !important\">12-18</span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 111.948px; height: 20px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,1,1,0\" style=\"margin-top:0px !important\">&nbsp;Cursor年度订阅</span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 79.625px; height: 20px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,1,2,0\" style=\"margin-top:0px !important\">192.00</span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 452.115px; height: 20px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,1,3,0\" style=\"margin-top:0px !important\">年度订阅（价格相比月度订阅优惠力度更大）</span></td></tr><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; box-sizing: border-box; width: 61.3333px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,2,0,0\" style=\"margin-top:0px !important\">12-18</span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 111.948px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,2,1,0\" style=\"margin-top:0px !important\">ChatGPT Plus</span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 79.625px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,2,2,0\" style=\"margin-top:0px !important\"><span style=\"font-family: sans-serif, &quot;Microsoft YaHei&quot;, 微软雅黑, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简;\">24.99</span></span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 452.115px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,2,3,0\" style=\"margin-top:0px !important\">月度订阅</span></td></tr><tr style=\"margin-top:0px !important\"><td style=\"border: 1px solid; box-sizing: border-box; width: 61.3333px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,8,0,0\" style=\"margin-top:0px !important\"><b style=\"margin-top:0px !important\">合计</b></span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 111.948px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><br></td><td style=\"border: 1px solid; box-sizing: border-box; width: 79.625px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><span data-path-to-node=\"8,8,2,0\" style=\"margin-top:0px !important\"><b style=\"margin-top:0px !important\">216.99</b></span></td><td style=\"border: 1px solid; box-sizing: border-box; width: 452.115px; height: 19.5312px; margin-top: 0px !important;\" colspan=\"1\"><br></td></tr></tbody></table></div><div style=\"margin-top: 0px; padding-top: 0px;\"><hr data-path-to-node=\"9\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><h3 data-path-to-node=\"10\" style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; line-height: 1.15 !important; margin-top: 0px !important;\"><b style=\"font-size: 14.6667px;\">其他说明：</b></h3><div data-path-to-node=\"11\" style=\"padding-inline-start:32px;font-family:sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑;list-style-type:none;padding-left:0px;line-height:1.15 !important;margin-top:0px !important;text-indent:0px;ww-list:l1\" data-editing-info=\"{&quot;orderedStyleType&quot;:[1,10,17],&quot;unorderedStyleType&quot;:[1,7,3]}\" data-list-style-type=\"1\" data-list-checked=\"true\" class=\"qymail-list-div\" qymail-original-tag=\"ul\"><div style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; color: rgb(0, 0, 0); position: relative; margin-left: 23.4667px; margin-top: 0px !important; text-indent: -23.4667px;\" data-list-style-type=\"1\" data-bullet-style-type=\"1\" class=\"qymail-list-div\" qymail-original-tag=\"li\"><b class=\"qymail-list-symbol\" contenteditable=\"false\" style=\"user-select: none; font-size: 1em; top: 0px; left: 0px; padding-right: 14.6105px; display: inline-flex; align-items: center; font-family: &quot;Times New Roman&quot;, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif; text-indent: 0px; box-sizing: border-box; font-weight: normal; min-width: 23.4667px;\"><span>●</span></b><b>可能由于chatGPT官网限制国内银行的visa卡支付，因此无法官网直充。故第三方充值，支付凭证见chatGPT月度订阅.jpg。金额略高于官方为：24.99$</b></div><div style=\"font-family: sans-serif, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, 苹方-简, &quot;Microsoft YaHei&quot;, 微软雅黑; font-size: 11pt; color: rgb(0, 0, 0); position: relative; margin-left: 23.4667px; margin-top: 0px !important; text-indent: -23.4667px;\" data-list-style-type=\"1\" data-bullet-style-type=\"1\" class=\"qymail-list-div\" qymail-original-tag=\"li\"><b class=\"qymail-list-symbol\" contenteditable=\"false\" style=\"user-select: none; background-color: rgba(0, 0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Times New Roman&quot;, -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, sans-serif; font-size: 1em; top: 0px; left: 0px; padding-right: 14.6105px; display: inline-flex; align-items: center; text-indent: 0px; box-sizing: border-box; font-weight: normal; min-width: 23.4667px;\"><span>●</span></b><b>cursor为年度订阅，故价格优惠，每月仅16$，因此年度订阅金额为192$</b></div></div></div></div><div class=\"qqmail_sign\" id=\"wemailsigcontent\" signid=\"502\">        <table style=\"border-collapse: collapse;max-width:350px;\" contenteditable=\"false\" class=\"wecomOutCardWrap\">      <tbody><tr><td>          <hr class=\"default_wemail_sig_line default_wemail_sig_line_out\" width=\"100%\" style=\"border-width: 0px 0px 1px; border-top-color: initial; border-right-color: initial; border-left-color: initial; border-image: initial; border-bottom-style: solid; border-bottom-color: rgba(6, 15, 26, 0.07); height: 0px; line-height: unset; font-size: 0px; padding: 0px; width: 100%; margin: 14px 0px 7px !important;\" align=\"left\">          <a href=\"https://work.weixin.qq.com/apph5/user/h5/corp?vcode=vcc19e106d1bad6691&amp;from=mail_card\" target=\"_blank\" class=\"wecomOutCard wecom_custom_card_company_info\" style=\"color: rgb(38, 126, 240);text-decoration: none; outline: none;color: rgb(38, 126, 240);text-decoration: none; outline: none;\">            <table style=\"border-collapse: initial;padding: 0px;cursor: default;border-spacing: 0;\" class=\"wecom_custom_card_table_main\" data-verify=\"true\" data-vcode=\"vcc19e106d1bad6691\">              <tbody><tr style=\"border-radius: 4px;\">                <td align=\"left\" style=\"cursor: default;\">                    <span style=\"vertical-align: middle; color: rgba(11, 18, 26, 0.6); font-size: 12px; font-family: -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;; font-weight: 700; line-height: 14.4px; overflow-wrap: break-word;\" class=\"wecom_custom_card_corpname\">飞友科技</span>                </td>                                  <td align=\"left\" style=\"padding-top: 2px;cursor: default;\">                    <img class=\"wemail-img-default\" width=\"13\" height=\"13\" style=\"vertical-align: middle;width: 13px;height: 13px;display:flex;\" src=\"https://rescdn.qqmail.com/node/wwqy/qymng/style/images/sass/independent/card_verify_full.png\">                  </td>                                  <td align=\"left\" style=\"padding-top: 2px;cursor: default;padding-left: 2px;\">                  <img class=\"wemail-img-default\" width=\"6\" height=\"10\" style=\"vertical-align: middle;width: 6px;height:10px;display:flex;\" src=\"https://rescdn.qqmail.com/node/wwqy/qymng/style/images/sass/independent/card_more.png\">                </td>              </tr>            </tbody></table>          </a>          <a href=\"https://work.weixin.qq.com/wework_admin/user/h5/qqmail_user_card/vcc19e106d1bad6691?from=myprofile\" target=\"_blank\" class=\"wecomOutCard\" style=\"color: rgb(38, 126, 240);text-decoration: none; outline: none;color: rgb(38, 126, 240);text-decoration: none; outline: none;\">            <table style=\"border-collapse: initial;border-spacing: 0;margin-top:1px;\" class=\"wecom_custom_card_table_sub\">                <tbody><tr style=\"border-radius: 4px;\">                  <td align=\"left\" style=\"cursor: default;\">                      <span style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 106px; vertical-align: top; color: black; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;; font-weight: 700; line-height: 19.6px; overflow-wrap: break-word; margin-right: 2px; text-indent: 0px;\" class=\"wecom_custom_card_username\">张亮</span>                  </td>                  <td align=\"left\" style=\"cursor: default;\">                      <span style=\"overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; max-width: 210px; vertical-align: top; color: black; font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;; font-weight: 400; line-height: 19.6px; overflow-wrap: break-word; text-indent: 0px;\" class=\"wecom_custom_card_position\"></span>                  </td>                  <td align=\"left\" style=\"cursor: default;\">                      <img width=\"20\" height=\"20\" style=\"vertical-align: -3.5px;width: 20px;height: 20px;\" src=\"https://rescdn.qqmail.com/node/wwqy/qymng/style/images/sass/independent/card_logo.png\" class=\"\">                  </td>                </tr>            </tbody></table>          </a>                                                        </td>  </tr></tbody></table>  <img src=\"https://exmail.qq.com/qy_mng_logic/reportKV?type=PcPluginSetting&amp;itemName=mail_mailcontent_signature_exposure\" style=\"display: none;width: 1px;height: 1px;position: absolute;left: -9999px;\" width=\"1\" height=\"1\" class=\"preview-hover-wemail\">  <br><div><br></div><div><br></div></div><div></div><div></div></div></div></div>","attachments":[{"filename":"Invoice-1F3YJWIV-0001.pdf","content_type":"application/octet-stream","size":344956},{"filename":"Receipt-2702-5897.pdf","content_type":"application/octet-stream","size":344706},{"filename":"cursor年度订阅支付截图.jpg","content_type":"application/octet-stream","size":115978},{"filename":"chatGPT月度订阅.jpg","content_type":"application/octet-stream","size":137720},{"filename":"chatgpt支付记录.png","content_type":"application/octet-stream","size":34387}],"attachment_count":5,"downloaded_files":[{"filename":"Invoice-1F3YJWIV-0001.pdf","path":"storage/attachments\\9\\Invoice-1F3YJWIV-0001.pdf","status":"exists"},{"filename":"Receipt-2702-5897.pdf","path":"storage/attachments\\9\\Receipt-2702-5897.pdf","status":"exists"},{"filename":"cursor年度订阅支付截图.jpg","path":"storage/attachments\\9\\cursor年度订阅支付截图.jpg","status":"exists"},{"filename":"chatGPT月度订阅.jpg","path":"storage/attachments\\9\\chatGPT月度订阅.jpg","status":"exists"},{"filename":"chatgpt支付记录.png","path":"storage/attachments\\9\\chatgpt支付记录.png","status":"exists"}],"extracted_files":[],"message_id":"<4ee5ab4e.755a.19bb684d37e.Coremail.theliang9@163.com>","references":""}
+2026-01-15 11:08:27 - autoEmailAgent - INFO - [工具调用] parse_email_expense_table(email_content_length=523)
+2026-01-15 11:08:27 - autoEmailAgent - INFO - [步骤] 费用解析: 开始解析邮件正文中的费用明细
+2026-01-15 11:08:41 - autoEmailAgent - INFO - [步骤] 邮件正文解析完成，解析结果为：{'applicant_name': '张亮', 'department': 'AC算法委员会', 'expenses': [{'date': '12-18', 'tool_name': 'Cursor年度订阅', 'amount': 192.0, 'currency': 'USD', 'notes': '年度订阅（价格相比月度订阅优惠力度更大）'}, {'date': '12-18', 'tool_name': 'ChatGPT Plus', 'amount': 24.99, 'currency': 'USD', 'notes': '月度订阅'}], 'total_amount': 216.99, 'total_currency': 'USD', 'other_notes': '2025年第四季度AI工具报销；支付账单、收据、付款凭证在附件压缩包中。'}
+2026-01-15 11:09:13 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\cursor年度订阅支付截图.jpg, ocr_provider=openai)
+2026-01-15 11:09:40 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\cursor年度订阅支付截图.jpg
+2026-01-15 11:09:54 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\cursor年度订阅支付截图.jpg
+2026-01-15 11:11:01 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\chatGPT月度订阅.jpg, ocr_provider=openai)
+2026-01-15 11:11:06 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\chatGPT月度订阅.jpg
+2026-01-15 11:11:19 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\chatGPT月度订阅.jpg
+2026-01-15 11:11:26 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\chatgpt支付记录.png, ocr_provider=openai)
+2026-01-15 11:11:26 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\chatgpt支付记录.png
+2026-01-15 11:11:39 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\chatgpt支付记录.png
+2026-01-15 11:11:43 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\Invoice-1F3YJWIV-0001.pdf, ocr_provider=openai)
+2026-01-15 11:11:43 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理PDF文件: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:11:48 - autoEmailAgent - INFO - [步骤] PDF转换: 开始转换PDF为图片: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:11:48 - autoEmailAgent - INFO - 使用poppler路径: D:\tools\Release-25.12.0-0\poppler-25.12.0\Library\bin
+2026-01-15 11:12:06 - autoEmailAgent - INFO - [步骤] PDF转换: PDF共1页，开始保存图片
+2026-01-15 11:13:18 - autoEmailAgent - INFO - [步骤] PDF转换: 第1页保存成功（PNG）
+2026-01-15 11:13:18 - autoEmailAgent - INFO - [步骤] PDF转换完成: 已转换1/1页图片
+2026-01-15 11:13:18 - autoEmailAgent - INFO - [步骤] PDF OCR: 开始逐页识别，共1页
+2026-01-15 11:13:18 - autoEmailAgent - INFO - [步骤] PDF OCR: 正在识别第1/1页
+2026-01-15 11:13:31 - autoEmailAgent - INFO - [步骤] PDF OCR: 第1页识别完成
+2026-01-15 11:13:31 - autoEmailAgent - INFO - [步骤] OCR完成: PDF文件处理完成: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:13:36 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\Receipt-2702-5897.pdf, ocr_provider=openai)
+2026-01-15 11:13:36 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理PDF文件: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:13:36 - autoEmailAgent - INFO - [步骤] PDF转换: 开始转换PDF为图片: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:13:36 - autoEmailAgent - INFO - 使用poppler路径: D:\tools\Release-25.12.0-0\poppler-25.12.0\Library\bin
+2026-01-15 11:13:38 - autoEmailAgent - INFO - [步骤] PDF转换: PDF共1页，开始保存图片
+2026-01-15 11:14:03 - autoEmailAgent - INFO - [步骤] PDF转换: 第1页保存成功（PNG）
+2026-01-15 11:14:03 - autoEmailAgent - INFO - [步骤] PDF转换完成: 已转换1/1页图片
+2026-01-15 11:14:03 - autoEmailAgent - INFO - [步骤] PDF OCR: 开始逐页识别，共1页
+2026-01-15 11:14:03 - autoEmailAgent - INFO - [步骤] PDF OCR: 正在识别第1/1页
+2026-01-15 11:16:17 - autoEmailAgent - INFO - [步骤] PDF OCR: 第1页识别完成
+2026-01-15 11:16:17 - autoEmailAgent - INFO - [步骤] OCR完成: PDF文件处理完成: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:16:22 - autoEmailAgent - INFO - [工具调用] reconcile(email_expenses_length=197, attachment_ocr_results_length=396)
+2026-01-15 11:16:22 - autoEmailAgent - INFO - [步骤] 费用核对: 开始核对邮件费用明细与OCR识别结果
+2026-01-15 11:18:39 - autoEmailAgent - INFO - [步骤] 费用核对完成: 费用核对完成
+2026-01-15 11:18:40 - autoEmailAgent - INFO - [步骤] 费用核对结果: {'match': True, 'matched_items': [{'email_tool': 'Cursor年度订阅', 'ocr_tool': 'Cursor', 'email_amount': 192.0, 'ocr_amount': 192.0, 'match': True, 'issues': []}, {'email_tool': 'ChatGPT Plus', 'ocr_tool': 'ChatGPT Plus', 'email_amount': 24.99, 'ocr_amount': 24.99, 'match': True, 'issues': ['支付日期缺失，无法核验日期合理性']}], 'unmatched_email_items': [], 'unmatched_ocr_items': ['Cursor, 192.0 USD, 2025-12-17（重复凭证）', 'Cursor, 176.99 CNY（未在邮件中出现）'], 'total_issues': ['ChatGPT Plus的支付凭证缺少支付日期，建议补充日期以便核验', 'OCR存在重复的Cursor 192.0 USD年度订阅支付凭证', 'OCR存在一笔Cursor 176.99 CNY未在邮件中列出，如为同一费用需更新邮件材料以支付记录为准，否则应剔除该凭证'], 'summary': '邮件中两项费用均可由支付凭证覆盖，整体匹配通过。存在一条ChatGPT Plus支付日期缺失、一个Cursor重复凭证，以及一条与邮件不对应的Cursor（CNY）凭证。建议补充ChatGPT Plus支付日期，并剔除重复/不相关的Cursor凭证或相应更新邮件材料。'}
+2026-01-15 11:19:32 - autoEmailAgent - INFO - [步骤] 材料检查完成: 材料完整性检查完成
+2026-01-15 11:19:32 - autoEmailAgent - INFO - [步骤] 材料检查结果：{
+  "complete": true,
+  "missing_materials": [],
+  "issues": [
+    "费用明细日期仅为“12-18”，缺少年份，可能影响核对与入账",
+    "所有附件的file_type均为application/octet-stream，可能导致系统识别异常（建议使用标准MIME：application/pdf、image/jpeg、image/png）",
+    "无法仅凭文件名明确发票与收据分别对应哪一项费用，建议标注映射关系",
+    "无法在当前环境核对PDF/图片内容是否与明细金额、日期、订阅名称一致，需人工复核附件内容"
+  ],
+  "suggestions": [
+    "为每项费用在备注中标注其对应的发票/收据/截图文件名（例如：Cursor年度订阅→Invoice-1F3YJWIV-0001.pdf、cursor年度订阅支付截图.jpg）",
+    "补充或更正费用日期为完整格式（含年份），如2024-12-18",
+    "若公司政策要求每项费用均需提供发票或收据，请确认两项订阅均各自具备（目前有发票和收据各一份，但归属不明）",
+    "重新上传附件时使用正确的MIME类型（PDF: application/pdf；JPG: image/jpeg；PNG: image/png）",
+    "人工核对附件内容是否包含并匹配：订阅名称、金额、币种、支付日期、交易号/发票号、付款方信息；如有税费，补充税额与总额明细",
+    "如需做外币报销，请附上报销日或交易日的汇率来源与换算说明"
+  ]
+}
+2026-01-15 11:19:42 - autoEmailAgent - INFO - [工具调用] db_insert_reimbursement(email_id=9, applicant_name=张亮, status=NEED_INFO)
+2026-01-15 11:19:42 - autoEmailAgent - INFO - [步骤] 数据库操作: 开始插入/更新报销记录: 9
+2026-01-15 11:19:51 - autoEmailAgent - INFO - [工具调用] db_insert_reimbursement(email_id=9, applicant_name=张亮, status=NEED_INFO)
+2026-01-15 11:19:51 - autoEmailAgent - INFO - [步骤] 数据库操作: 开始插入/更新报销记录: 9
+2026-01-15 11:20:03 - autoEmailAgent - INFO - [工具调用] draft_and_send_reply_email(email_id=9, to_email=theliang9@163.com, applicant_name=张亮, issues_count=4)
+2026-01-15 11:20:42 - autoEmailAgent - INFO - [步骤] 撰写并发送邮件: 开始为 张亮 撰写并发送补充材料邮件
+2026-01-15 11:20:51 - autoEmailAgent - INFO - [工具调用] draft_reply_email(applicant_name=张亮, issues_count=4)
+2026-01-15 11:20:51 - autoEmailAgent - INFO - [步骤] 邮件草稿: 开始为 张亮 撰写补充材料邮件草稿
+2026-01-15 11:27:18 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:27:18 - autoEmailAgent - INFO - 程序结束
+2026-01-15 11:27:32 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 11:27:32 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 11:27:32 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 11:27:32 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 11:27:33 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 11:27:33 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 11:27:33 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 11:27:49 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:27:49 - autoEmailAgent - INFO - 程序结束
+2026-01-15 11:28:14 - autoEmailAgent - INFO - [步骤] 系统启动: 开始初始化autoEmailAgent
+2026-01-15 11:28:14 - autoEmailAgent - INFO - [步骤] 数据库初始化: 正在初始化连接池...
+2026-01-15 11:28:15 - autoEmailAgent - INFO - [步骤] 数据库初始化: 连接池初始化成功
+2026-01-15 11:28:15 - autoEmailAgent - INFO - [步骤] Agent创建: 正在创建Agent实例...
+2026-01-15 11:28:16 - autoEmailAgent - INFO - [步骤] Agent创建: Agent创建成功
+2026-01-15 11:28:16 - autoEmailAgent - INFO - [步骤] 任务开始: 开始执行批处理任务
+2026-01-15 11:28:16 - autoEmailAgent - INFO - 任务内容: 连接邮箱后，处理所有未入库或status=NEW的"AI工具报销邮件"：
+            - 对每封邮件：读取->解析费用表->下载/解压附件->OCR->核对->入库/更新
+            - 对缺材料或不一致的：生成补充材料邮件并直接发送回复邮件、更新DB状态（报销表和附件表）
+            - 材料齐全：无需回复邮件，更新DB状态即可。
+            - 处理完成后停止
+2026-01-15 11:28:38 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=None, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 11:28:39 - autoEmailAgent - INFO - [步骤] 邮件列表: 开始列出未处理的报销邮件
+2026-01-15 11:28:46 - autoEmailAgent - INFO - [步骤] 邮件列表完成: 邮件列表获取完成
+2026-01-15 11:28:46 - autoEmailAgent - INFO - [步骤] 待处理邮件列表：{"emails":[{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","date":"2026-01-13T16:41:56+08:00"}],"count":1}
+2026-01-15 11:28:47 - autoEmailAgent - INFO - [工具调用] process_reimbursement_email(email_id=9, max_count=None, download_attachments=True, extract_zips=True)
+2026-01-15 11:28:48 - autoEmailAgent - INFO - [步骤] 邮件处理: 开始处理邮件: 9
+2026-01-15 11:28:52 - autoEmailAgent - INFO - [步骤] 邮件处理完成: 邮件 9 处理完成
+2026-01-15 11:28:52 - autoEmailAgent - INFO - [步骤] 邮件 9 处理结果：{"email_id":"9","subject":"AI报销-张亮-AC","from":"张亮  <theliang9@163.com>","to":"zhangliang@variflight.com","date":"2026-01-13T16:41:56+08:00","body_text":"\n\n\n\n\n\n\n\n\n\n\n\n-------- 转发邮件信息 --------\n发件人：\"张亮\" <zhangliang@variflight.com>\n发送日期：2026-01-12 15:38:29\n收件人：theliang9 <theliang9@163.com>\n主题：AI报销-张亮-AC\n\n\nDear HR,\n\n现提交AC算法委员会张亮 2025 年第四季度 AI 工具费用报销申请。费用明细见邮件正文，支付账单、收据、付款凭证在附件压缩包中。\n\n一、AI 在工作中的应用 (2025 Q4)\n| 月份 | 工作内容 | AI 工具作用 |\n| 10月 |\n\n• 航班数据取数Kotlin代码解读\n\n\n\n\n• 航空查询agent工具调用\n\n|\n\nCursor：拆解开源项目架构；\n\nCursor：辅助实现编码\n\n|\n| 11月 |\n\n• OCR工具对比\n\n\n\n\n• 航空查询agent开发\n\n|\n\nGPT-5：代码异常bug分析；\n\nCursor：辅助实现编码\n\n|\n| 12月 |\n\n• 开源项目分析对比\n\n\n\n\n• PPT、思维导图生成\n\n\n\n\n• 多轮Agent会话、memory机制研发\n\n|\n\nCursor：辅助实现编码；\n\n\nGPT-5：文件内容提取、OCR识别\n\n|\n二、费用明细 (2025 Q4)\n| 支付日期 | 工具 / 订阅 | 金额 (USD) | 备注 |\n| 12-18 |  Cursor年度订阅 | 192.00 | 年度订阅（价格相比月度订阅优惠力度更大） |\n| 12-18 | ChatGPT Plus | 24.99 | 月度订阅 |\n| 合计 |\n| 216.99 |\n|\n其他说明：\n●可能由于chatGPT官网限制国内银行的visa卡支付，因此无法官网直充。故第三方充值，支付凭证见chatGPT月度订阅.jpg。金额略高于官方为：24.99$\n●cursor为年度订阅，故价格优惠，每月仅16$，因此年度订阅金额为192$\n|\n| 飞友科技 | | |\n| 张亮 | | |\n|\n\n\n\n\n\n","attachments":[{"filename":"Invoice-1F3YJWIV-0001.pdf","content_type":"application/octet-stream","size":344956},{"filename":"Receipt-2702-5897.pdf","content_type":"application/octet-stream","size":344706},{"filename":"cursor年度订阅支付截图.jpg","content_type":"application/octet-stream","size":115978},{"filename":"chatGPT月度订阅.jpg","content_type":"application/octet-stream","size":137720},{"filename":"chatgpt支付记录.png","content_type":"application/octet-stream","size":34387}],"attachment_count":5,"downloaded_files":[{"filename":"Invoice-1F3YJWIV-0001.pdf","path":"storage/attachments\\9\\Invoice-1F3YJWIV-0001.pdf","status":"exists"},{"filename":"Receipt-2702-5897.pdf","path":"storage/attachments\\9\\Receipt-2702-5897.pdf","status":"exists"},{"filename":"cursor年度订阅支付截图.jpg","path":"storage/attachments\\9\\cursor年度订阅支付截图.jpg","status":"exists"},{"filename":"chatGPT月度订阅.jpg","path":"storage/attachments\\9\\chatGPT月度订阅.jpg","status":"exists"},{"filename":"chatgpt支付记录.png","path":"storage/attachments\\9\\chatgpt支付记录.png","status":"exists"}],"extracted_files":[],"message_id":"<4ee5ab4e.755a.19bb684d37e.Coremail.theliang9@163.com>","references":""}
+2026-01-15 11:29:00 - autoEmailAgent - INFO - [工具调用] parse_email_expense_table(email_content_length=867)
+2026-01-15 11:29:00 - autoEmailAgent - INFO - [步骤] 费用解析: 开始解析邮件正文中的费用明细
+2026-01-15 11:29:17 - autoEmailAgent - INFO - [步骤] 邮件正文解析完成，解析结果为：{'applicant_name': '张亮', 'department': 'AC算法委员会', 'expenses': [{'date': '12-18', 'tool_name': 'Cursor年度订阅', 'amount': 192.0, 'currency': 'USD', 'notes': '年度订阅（价格相比月度订阅优惠力度更大）'}, {'date': '12-18', 'tool_name': 'ChatGPT Plus', 'amount': 24.99, 'currency': 'USD', 'notes': '月度订阅'}], 'total_amount': 216.99, 'total_currency': 'USD', 'other_notes': '可能由于chatGPT官网限制国内银行的visa卡支付，因此无法官网直充。故第三方充值，支付凭证见chatGPT月度订阅.jpg。金额略高于官方为：24.99$；cursor为年度订阅，故价格优惠，每月仅16$，因此年度订阅金额为192$'}
+2026-01-15 11:29:26 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\cursor年度订阅支付截图.jpg, ocr_provider=openai)
+2026-01-15 11:29:26 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\cursor年度订阅支付截图.jpg
+2026-01-15 11:29:38 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\cursor年度订阅支付截图.jpg
+2026-01-15 11:29:38 - autoEmailAgent - INFO - [步骤] 图片OCR识别结果：{"image_path":"storage/attachments\\9\\cursor年度订阅支付截图.jpg","provider":"openai","ocr_result":{"raw_text":"{\n    \"tool_name\": \"Cursor\",\n    \"amount\": 192.00,\n    \"currency\": \"USD\",","tool_name":null,"amount":null,"currency":null,"date":null,"subscription_type":null,"confidence":"低"},"success":true}
+2026-01-15 11:29:40 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\chatGPT月度订阅.jpg, ocr_provider=openai)
+2026-01-15 11:29:40 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\chatGPT月度订阅.jpg
+2026-01-15 11:29:52 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\chatGPT月度订阅.jpg
+2026-01-15 11:29:52 - autoEmailAgent - INFO - [步骤] 图片OCR识别结果：{"image_path":"storage/attachments\\9\\chatGPT月度订阅.jpg","provider":"openai","ocr_result":{"raw_text":"{\n    \"tool_name\": \"Cursor\",\n    \"amount\": 176.99,\n    \"currency\": \"CNY\",\n    \"dat","tool_name":null,"amount":null,"currency":null,"date":null,"subscription_type":null,"confidence":"低"},"success":true}
+2026-01-15 11:29:53 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\chatgpt支付记录.png, ocr_provider=openai)
+2026-01-15 11:29:53 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理图片文件: storage/attachments\9\chatgpt支付记录.png
+2026-01-15 11:30:03 - autoEmailAgent - INFO - [步骤] OCR完成: 图片文件处理完成: storage/attachments\9\chatgpt支付记录.png
+2026-01-15 11:30:03 - autoEmailAgent - INFO - [步骤] 图片OCR识别结果：{"image_path":"storage/attachments\\9\\chatgpt支付记录.png","provider":"openai","ocr_result":{"tool_name":"ChatGPT Plus","amount":24.99,"currency":"USD","date":null,"subscription_type":"ChatGPT Plus","raw_text":"订阅\n交易记录\n订单ID\n订单金额\n订单类型\n支付状态\n656701319536873472\ntheliangz@gmail.com\n$24.99\nChatGPT Plus\n支付成功","confidence":"高"},"success":true}
+2026-01-15 11:30:05 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\Invoice-1F3YJWIV-0001.pdf, ocr_provider=openai)
+2026-01-15 11:30:05 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理PDF文件: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:31:11 - autoEmailAgent - INFO - [步骤] PDF转换: 开始转换PDF为图片: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:31:11 - autoEmailAgent - INFO - 使用poppler路径: D:\tools\Release-25.12.0-0\poppler-25.12.0\Library\bin
+2026-01-15 11:31:11 - autoEmailAgent - ERROR - PDF转图片失败: Unable to get page count.
+Traceback (most recent call last):
+  File "D:\anaconda\Lib\site-packages\pdf2image\pdf2image.py", line 602, in pdfinfo_from_path
+    raise ValueError
+ValueError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\variFlight\projects\autoEmailAgent\agent_service\src\service\tools_ocr.py", line 130, in _pdf_to_images
+    images = convert_from_path(pdf_path, dpi=200, poppler_path=poppler_path)
+  File "D:\anaconda\Lib\site-packages\pdf2image\pdf2image.py", line 127, in convert_from_path
+    page_count = pdfinfo_from_path(
+                 ~~~~~~~~~~~~~~~~~^
+        pdf_path, userpw, ownerpw, poppler_path=poppler_path
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )["Pages"]
+    ^
+  File "D:\anaconda\Lib\site-packages\pdf2image\pdf2image.py", line 611, in pdfinfo_from_path
+    raise PDFPageCountError(
+        f"Unable to get page count.\n{err.decode('utf8', 'ignore')}"
+    )
+pdf2image.exceptions.PDFPageCountError: Unable to get page count.
+
+2026-01-15 11:31:11 - autoEmailAgent - ERROR - PDF转图片失败: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:31:11 - autoEmailAgent - INFO - [步骤] OCR完成: PDF文件处理完成: storage/attachments\9\Invoice-1F3YJWIV-0001.pdf
+2026-01-15 11:31:11 - autoEmailAgent - INFO - [步骤] PDF OCR识别结果：{"error":"PDF转图片失败，请确保已安装pdf2image和poppler","file_path":"storage/attachments\\9\\Invoice-1F3YJWIV-0001.pdf","hint":"安装方法：pip install pdf2image，并安装poppler工具\n已找到poppler路径: D:\\tools\\Release-25.12.0-0\\poppler-25.12.0\\Library\\bin，但转换失败，请检查poppler是否完整安装","poppler_path":"D:\\tools\\Release-25.12.0-0\\poppler-25.12.0\\Library\\bin"}
+2026-01-15 11:31:12 - autoEmailAgent - INFO - [工具调用] ocr_receipt(file_path=storage/attachments\9\Receipt-2702-5897.pdf, ocr_provider=openai)
+2026-01-15 11:31:12 - autoEmailAgent - INFO - [步骤] OCR处理: 开始处理PDF文件: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:31:12 - autoEmailAgent - INFO - [步骤] PDF转换: 开始转换PDF为图片: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:31:12 - autoEmailAgent - INFO - 使用poppler路径: D:\tools\Release-25.12.0-0\poppler-25.12.0\Library\bin
+2026-01-15 11:31:12 - autoEmailAgent - INFO - [步骤] PDF转换: PDF共1页，开始保存图片
+2026-01-15 11:31:13 - autoEmailAgent - INFO - [步骤] PDF转换: 第1页保存成功（PNG）
+2026-01-15 11:31:13 - autoEmailAgent - INFO - [步骤] PDF转换完成: 已转换1/1页图片
+2026-01-15 11:31:13 - autoEmailAgent - INFO - [步骤] PDF OCR: 开始逐页识别，共1页
+2026-01-15 11:31:13 - autoEmailAgent - INFO - [步骤] PDF OCR: 正在识别第1/1页
+2026-01-15 11:31:24 - autoEmailAgent - INFO - [步骤] PDF OCR: 第1页识别完成
+2026-01-15 11:31:24 - autoEmailAgent - INFO - [步骤] OCR完成: PDF文件处理完成: storage/attachments\9\Receipt-2702-5897.pdf
+2026-01-15 11:31:24 - autoEmailAgent - INFO - [步骤] PDF OCR识别结果：{"file_path":"storage/attachments\\9\\Receipt-2702-5897.pdf","file_type":"pdf","total_pages":1,"provider":"openai","pages":[{"image_path":"storage/attachments\\9\\Receipt-2702-5897_pages\\page_1.png","provider":"openai","ocr_result":{"raw_text":"{\n    \"tool_name\": \"Cursor\",\n    \"amount\": 192.00,\n    \"currency\": \"USD\",\n    \"date\": \"2025-12-17\",\n    \"subscription_type\": \"年度订阅\",\n    \"raw_text\": \"Receipt\\nInvoice number 1F3YJWIV-0001\\nDate paid December 17, 2025\\n\\nCursor\\n801 West End Avenue\\nNew York, New York 10025\\nUnited States\\n+1 831-425-9504\\nhi@cursor.com\\n\\nBill to\\n张亮\\n230088\\n安徽省合肥市\\n祥源金港湾\\n12栋1502室, 高新区\\nChina\\ntheliangz@gmail.com\\n\\n$192.00 paid on December 17, 2025\\n\\nDescription\\tQty\\tUnit price","tool_name":null,"amount":null,"currency":null,"date":null,"subscription_type":null,"confidence":"低"},"success":true,"page_number":1,"total_pages":1}],"success":true,"merged_ocr_result":{"tool_name":null,"amount":null,"currency":null,"date":null,"raw_text":"{\n    \"tool_name\": \"Cursor\",\n    \"amount\": 192.00,\n    \"currency\": \"USD\",\n    \"date\": \"2025-12-17\",\n    \"subscription_type\": \"年度订阅\",\n    \"raw_text\": \"Receipt\\nInvoice number 1F3YJWIV-0001\\nDate paid December 17, 2025\\n\\nCursor\\n801 West End Avenue\\nNew York, New York 10025\\nUnited States\\n+1 831-425-9504\\nhi@cursor.com\\n\\nBill to\\n张亮\\n230088\\n安徽省合肥市\\n祥源金港湾\\n12栋1502室, 高新区\\nChina\\ntheliangz@gmail.com\\n\\n$192.00 paid on December 17, 2025\\n\\nDescription\\tQty\\tUnit price","confidence":"高"}}
+2026-01-15 11:31:29 - autoEmailAgent - INFO - [工具调用] reconcile(email_expenses_length=197, attachment_ocr_results_length=149)
+2026-01-15 11:31:29 - autoEmailAgent - INFO - [步骤] 费用核对: 开始核对邮件费用明细与OCR识别结果
+2026-01-15 11:34:18 - autoEmailAgent - INFO - [步骤] 费用核对完成: 费用核对完成
+2026-01-15 11:34:19 - autoEmailAgent - INFO - [步骤] 费用核对结果: {'match': True, 'matched_items': [{'email_tool': 'Cursor年度订阅', 'ocr_tool': 'Cursor', 'email_amount': 192.0, 'ocr_amount': 192.0, 'match': True, 'issues': ['支付日期相差1天（邮件：12-18；凭证：2025-12-17），视为合理时间差', '邮件日期未提供年份']}, {'email_tool': 'ChatGPT Plus', 'ocr_tool': 'ChatGPT Plus', 'email_amount': 24.99, 'ocr_amount': 24.99, 'match': True, 'issues': ['凭证缺少支付日期']}], 'unmatched_email_items': [], 'unmatched_ocr_items': [], 'total_issues': ['Cursor：支付日期相差1天（邮件：12-18；凭证：2025-12-17），视为合理时间差', 'Cursor：邮件日期未提供年份', 'ChatGPT Plus：凭证缺少支付日期'], 'summary': '两项费用均在支付凭证中找到对应记录，工具名可视为匹配，金额与币种完全一致。Cursor的日期与邮件相差1天（可接受），邮件未含年份；ChatGPT Plus的凭证缺少日期。总体匹配通过，无缺失凭证。'}
+2026-01-15 11:38:56 - autoEmailAgent - INFO - [步骤] 系统关闭: 正在关闭数据库连接池...
+2026-01-15 11:38:56 - autoEmailAgent - INFO - 程序结束
